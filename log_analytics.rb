@@ -5,7 +5,7 @@ class LogAnalytics
 
   def print_statistics
     print_uniq_page_count
-    print_total_request_count
+    print_total_request_ips_count
     print_total_count_of_request_ips
     print_one_time_logged_ips_per_page
     print_uniq_ips_per_page
@@ -18,12 +18,12 @@ class LogAnalytics
     puts "\nTotal uniq path in logs #{log_entries.length}"
   end
 
-  def print_total_request_count
-    puts "\nTotal requests count #{@log_entries.values.map(&:values).flatten.sum}"
+  def print_total_request_ips_count
+    puts "\nTotal request IPs count #{log_entries.values.map(&:values).flatten.sum}"
   end
 
   def print_total_count_of_request_ips
-    puts "\nTotal unique IPs #{@log_entries.values.map(&:keys).flatten.uniq.count}"
+    puts "\nTotal unique IPs #{log_entries.values.map(&:keys).flatten.uniq.count}"
   end
 
   def print_one_time_logged_ips_per_page
@@ -48,21 +48,21 @@ class LogAnalytics
   end
 
   def one_time_logged_ips_per_page
-    log_entries.reduce(Hash.new(0)) do |entries, (path, ips) |
+    log_entries.reduce(Hash.new(0)) do |entries, (path, ips)|
       entries[path] = ips.select {|ip, count| count == 1 }.length
       entries
     end
   end
 
   def total_logs_per_page
-    log_entries.reduce(Hash.new(0)) do |entries, (path, ips) |
+    log_entries.reduce(Hash.new(0)) do |entries, (path, ips)|
       entries[path] = ips.values.sum
       entries
     end
   end
 
   def uniq_request_ip_per_page
-    log_entries.reduce(Hash.new(0)) do |entries, (path, ips) |
+    log_entries.reduce(Hash.new(0)) do |entries, (path, ips)|
       entries[path] = ips.keys.length
       entries
     end

@@ -27,7 +27,7 @@ class LogAnalyticsTest < Minitest::Test
         log_analytics.print_statistics
       end
 
-      assert_equal out.first, "\nTotal uniq path in logs 3\n\nTotal requests count 14\n\nTotal unique IPs 3\n\nOne Time Visitpr IPs per page\n/home 1\n/index 1\n/about 0\n\nUniq IP per page\n/home 3\n/about 2\n/index 2\n\nTotal View Counts\n/home 6\n/about 4\n/index 4\n"
+      assert_equal out.first, "\nTotal uniq path in logs 3\n\nTotal request IPs count 14\n\nTotal unique IPs 3\n\nOne Time Visitpr IPs per page\n/home 1\n/index 1\n/about 0\n\nUniq IP per page\n/home 3\n/about 2\n/index 2\n\nTotal View Counts\n/home 6\n/about 4\n/index 4\n"
     end
   end
 
@@ -45,7 +45,7 @@ class LogAnalyticsTest < Minitest::Test
           }
         }
 
-        expected_output = { :'/about' => 4, :'/index' => 4 }
+        expected_output = { '/about': 4, '/index': 4 }
 
         log_analytics = LogAnalytics.new(log_entries)
         assert_equal log_analytics.send('total_logs_per_page'), expected_output
@@ -65,7 +65,7 @@ class LogAnalyticsTest < Minitest::Test
           }
         }
 
-        expected_output = { :'/about' => 0, :'/index' => 1 }
+        expected_output = { '/about': 0, '/index': 1 }
         log_analytics = LogAnalytics.new(log_entries)
         assert_equal log_analytics.send('one_time_logged_ips_per_page'), expected_output
       end
@@ -85,7 +85,7 @@ class LogAnalyticsTest < Minitest::Test
           }
         }
 
-        expected_output = { :'/about' => 2, :'/index' => 3 }
+        expected_output = { '/about': 2, '/index': 3 }
 
         log_analytics = LogAnalytics.new(log_entries)
         assert_equal log_analytics.send('uniq_request_ip_per_page'), expected_output

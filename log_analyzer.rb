@@ -6,7 +6,6 @@ class LogAnalyzer
   def initialize(file = nil)
     @file = file
     @requests = Hash.new { |h, k| h[k] = Hash.new(0) }
-    @ips = []
   end
 
   def analyse
@@ -17,11 +16,10 @@ class LogAnalyzer
 
   def parse_log
     File.readlines(@file).each do |line|
-      return unless valid?(line.strip)
+      return false unless valid?(line.strip)
 
       path, ip_address = line.strip.split(' ').map(&:to_sym)
       @requests[path][ip_address] += 1
-      @ips.push(ip_address)
     end
   end
 
